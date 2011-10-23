@@ -1,0 +1,210 @@
+html,body {
+	margin:0;
+	padding:0;
+	height: 100%; /* needed for container min-height */
+	font: 72.5% "Trebuchet MS", sans-serif; 
+	color: #333;
+	
+	min-width: 768px;
+}
+
+.wrapper {
+	position:relative; /* needed for footer positioning*/
+	margin:0 auto; /* center, not in IE5 */
+	height:auto !important; /* real browsers */
+	height:100%; /* IE6: treaded as min-height*/
+	min-height:100%; /* real browsers */	
+}
+
+.footer,
+.header {
+	background: #f5f5f5;
+	padding: 5px 10px;
+}
+.header {
+	border-bottom: 1px solid #e5e5e5; 
+	font-size: 1.75em;
+	background: #f5f5f5 url('../gfx/sheep-32x32.png') 15px 2px no-repeat;
+	padding: 11px 0 9px 55px;
+    overflow: hidden;
+}
+.header a, .header a:visited { float: left; color: #333; text-decoration: none; }
+.header a:hover, .header a:hover:visited { text-decoration: underline; }
+
+.menu ul {
+    margin: 0 auto;
+    padding: 0 20px 0 0;
+    list-style: none;
+}
+.menu ul li {
+    display: block;
+    float: right;
+
+    padding: 0 5px 0 0;
+}
+.menu a:hover, .menu a:hover:visited { text-decoration: none; }
+.menu .ss_sprite {
+    padding: 0 0 0 22px;
+}
+
+.menu a.active {
+    z-index: 1001;
+    border: 1px solid #e5e5e5;
+    border-bottom: none;
+    background: #f5f5f5;
+    padding: 5px 10px;
+    height: 25px;
+    position: absolute;
+    top: 5px;
+    right: 14px;
+}
+
+.footer { 
+	border-top: 1px solid #e5e5e5; 
+	text-align: center; 
+	font-size: 1.25em;
+	padding: 4px 0;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.content {
+	font-size: 1.25em;
+    float: left;
+    width: 100%;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+}
+
+.lame-queue,
+.lame-queue.first {
+	border-right: 2px solid #e5e5e5;
+}
+.lame-queue.last {
+	border: none;
+}
+
+.lame-queue {
+	padding: 1em 1.25em;
+	float: left;
+    overflow: hidden; /* hide ul list, when height is set 100% */
+}
+
+.lame-queue ul {
+	list-style: none;
+	margin: 0 0 20px 0;
+	padding: 0 0 20px 0;
+	min-height: 20px;
+    height: 100%;
+    overflow: auto;
+}
+
+.lame-queue ul li {
+	margin: 5px 0;
+	cursor: pointer;
+}
+
+.lame-queue-header {	
+	color: #e5e5e5;
+	font-size: 2.5em;
+	width: 100%;
+}
+
+.lame-card-header {
+	padding: 5px 10px;
+	font-weight: bold;
+}
+
+.lame-card-content {
+	padding: 5px 10px;
+}
+
+.lame-card-active .lame-card-header,
+.lame-card-active .lame-card-content {
+	/* Required for IE 5, 6, 7 */
+	/* ...or something to trigger hasLayout, like zoom: 1; */
+    width: 100%;
+	/* Theoretically for IE 8 & 9 (more valid) */
+	/* ...but not required as filter works too */
+	/* should come BEFORE filter */
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	
+	/* This works in IE 8 & 9 too */
+	/* ... but also 5, 6, 7 */
+	filter: alpha(opacity=50);
+	
+	/* Older than Firefox 0.9 */
+	-moz-opacity:0.5;
+	
+	/* Safari 1.x (pre WebKit!) */
+	-khtml-opacity: 0.5;
+	/* Modern!
+	/* Firefox 0.9+, Safari 2?, Chrome any?
+	/* Opera 9+, IE 9+ */
+	opacity: 0.5;
+}
+
+.lame-card-placeholder {
+	background: #333;
+	border: 1px solid #333;
+}
+
+.lame-red {
+	background: #FF7373;
+	border: 1px solid #A60000;
+}
+
+.lame-green {
+	background: #C9F76F;
+	border: 1px solid #679B00;
+}
+
+.lame-blue {
+	background: #5CCCCC;
+	border: 1px solid #006363;
+}
+
+.add-card {
+    position: absolute;
+    top: 35px;
+    right: 14px;
+    width: 250px;
+    z-index: 1000;
+    overflow: hidden;
+    padding: 10pt 10pt;
+    font-size: .85em;
+    background: #f5f5f5;
+    border: 1px solid #e5e5e5;
+}
+.add-card textarea {
+    width: 250px;
+    height: 50px;
+}
+.add-card input {
+    width: 245px;
+    margin: 0;
+}
+.add-card label {
+    padding: 5px 0 0 0;
+    margin: 0;
+    display: block;
+}
+
+.add-card ul.color-list li {
+    height: 12px;
+    width: 12px;
+    margin: 5px 5px 0 0;
+    float: left;
+    padding: 2px;
+}
+.add-card ul.color-list li.selected {
+    border-width: 3px;
+    padding: 0;
+}
+
+.add-card ul.color-list {
+    overflow: hidden;
+}

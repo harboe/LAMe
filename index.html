@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LAMe - Lean And Mean</title>
+		<link rel="icon" href="gfx/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="gfx/favicon.ico" type="image/x-icon" />
+
+		<link type="text/css" href="css/lame.css" rel="stylesheet" />
+        <link type="text/css" href="css/sprite.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="js/lame.js"></script>
+		<script type="text/javascript">
+		
+			$().ready(function() {
+
+				$('.content').lame({
+                    remove: function() {
+                        resize('.lame-queue');
+                        return true;
+                    }
+                });
+
+                $('a[href="#add"]').click(function() {
+                    
+                    if ($(this).hasClass('active'))
+                        hideCard();
+                    else
+                        showCard();       
+                    
+                    return false;
+                });
+                $(document).mouseup(function(e) {
+                    if($(e.target).closest("#add-card", '.add-card').length==0) {
+                        hideCard();
+                    }
+                }); 
+
+                $(window).resize(function() {
+                    resize('.lame-queue');
+                });
+
+                $.each($('.content').lame('options').colors, function(key,value) {
+                    $('.color-list').append(
+                        $('<li class="' + value + '"></li>')
+                    );
+                });
+                $('.color-list li:first').addClass('selected');
+
+                $('.color-list li').click(function() {
+                    $('.color-list li.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                    return false;
+                });
+
+                $(':input[name="submit-card"]').click(function() {
+                    var id = generateId(),
+                        name = $(':input[name="name"]').val(), 
+                        desc = $(':input[name="desc"]').val(), 
+                        color = $('.color-list .selected').index(); 
+                    
+                    if (name.length == 0 || desc.length == 0)
+                        return; // should show some validation.
+                    
+                    $('.content').lame('card', {
+                        id: id, name: name, desc: desc, color: color
+                    });
+
+                    $(':input[name="name"]').val('');
+                    $(':input[name="desc"]').val('');
+
+                    return false;
+                });
+
+                resize('.lame-queue');
+			});
+
+            function showCard() {
+                $('a[href="#add"]').addClass('active');
+                $('.add-card').slideDown(); 
+            }
+
+            function hideCard() {
+                $('.add-card').slideUp('fast', function() {
+                    $('a[href="#add"]').removeClass('active');
+                });
+            }
+
+            function generateId() {
+                var id = 0;
+                $('.content li[id], .content div[id]').each(function() {
+                    var tmp = parseInt($(this).attr('id'), 10); 
+                    
+                    if (tmp > id)
+                        id = tmp;
+                });
+
+                return id + 1;
+            }
+
+           	function resize(selector) {
+                selector = $(selector);
+    	    	
+                var height = 0, width = 0, offset = 0;
+                
+                width = selector.parent().width();
+                width -= 15; // 15px is the width a scrollbar in firefox.
+	    	    //width -= getScrollbarWidth();
+                offset = getOffset(selector);
+
+        		// Get the width of the row and divide it by the number of columns
+    	    	// it can fit / then round it down to a whole number. 
+		        // This value will be the exact width of the re-adjusted column
+		        var col = Math.floor(width / selector.length); 
+                col -= offset[0];
+                
+                height += window.innerHeight;
+                height -= getHeight($('.header'));
+                height -= getHeight($('.footer'));
+                height -= offset[1]; 
+                
+        		// Set exact width of row in pixels instead of using % - 
+		        // Prevents cross-browser bugs that appear in certain view port resolutions.		
+        		selector.css({ 'width' : col, 'height': height }); 
+
+                function getHeight(element) {
+                    element = $(element);
+                    return element.height() + getOffset(element)[1];
+                }
+
+                function getOffset(element) {
+                    element = $(element);
+                    var offsetX = 0, offsetY = 0;
+
+                    offsetY += parseInt(element.css('padding-top'), 10);
+                    offsetY += parseInt(element.css('margin-top'), 10);
+                    offsetY += parseInt(element.css('padding-bottom'), 10);
+                    offsetY += parseInt(element.css('margin-bottom'), 10);
+                    offsetY += parseInt(element.css('border-top-width'), 10);
+                    offsetY += parseInt(element.css('border-bottom-width'), 10);
+
+                    offsetX += parseInt(element.css('padding-left'), 10);
+                    offsetX += parseInt(element.css('margin-left'), 10);
+                    offsetX += parseInt(element.css('padding-right'), 10);
+                    offsetX += parseInt(element.css('margin-right'), 10);
+                    offsetX += parseInt(element.css('border-left-width'), 10);
+                    offsetX += parseInt(element.css('border-right-width'), 10);
+
+                    return [ offsetX, offsetY ];
+                }
+	        }
+
+		</script>
+    </head>
+    <body>
+		<div class="wrapper">
+			
+			<div class="header">
+				<a href="" title="go home">LAMe - Lean And Mean</a>
+                <div class="menu">
+                    <ul> 
+                        <li>
+                            <a href="#add">
+                                <div class="ss_sprite ss_application_go"></div>Add
+                            </a>
+                            <div class="add-card" style="display: none">
+                                
+                                <form id="add-card" action="" method="post">
+                                    <label for="name">Name:</label>
+                                    <input name="name" type="text" /><br />
+
+                                    <label for="desc">Description:</label>
+                                    <textarea name="desc" rows="1" cols="1"></textarea><br />
+                                    
+                                    <label for="color">Colors:</label>
+                                    <ul class="color-list"></ul><br />
+
+                                    <input name="submit-card" type="button" value="Add Card" />
+                                </form>
+
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#settings">
+                                <div class="ss_sprite"></div>Settings
+                            </a>
+                            <div class="" style="display: none">
+                                
+                                <form id="setting-form" action="" method="post">
+
+                                    <label for="">
+                                    <input name="" type="text" /><br />
+
+                                </form>
+                                
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+			</div>
+
+			<div class="content">
+            
+               <div id='1' class='lame-queue first'>
+                    <div class='lame-queue-header'>backlog</div>
+                    <ul class='lame-queue-content'>
+                        <li id='2' class='lame-card lame-red'>
+                            <div class='lame-card-header'>Test1</div>
+                            <div class='lame-card-content'>bla</div>
+                        </li>
+                        <li id='3' class='lame-card lame-green'>
+                            <div class='lame-card-header'>Test2</div>
+                            <div class='lame-card-content'>bla bla</div>
+                        </li>
+                        <li id='4' class='lame-card lame-blue'>
+                            <div class='lame-card-header'>Test3</div>
+                            <div class='lame-card-content'>bla bla bla</div>
+                        </li>
+                    </ul>
+               </div>
+
+               <div id='5' class='lame-queue'>
+                    <div class='lame-queue-header'>development</div>
+                    <ul class='lame-queue-content'>
+                        <li id='6' class='lame-card lame-blue'>
+                            <div class='lame-card-header'>dev1</div>
+                            <div class='lame-card-content'>bla bla bla</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id='7' class='lame-queue'>
+                    <div class='lame-queue-header'>deployment</div>
+                    <ul class='lame-queue-content'>
+                        <li id='8' class='lame-card lame-red'>
+                            <div class='lame-card-header'>ploy1</div>
+                            <div class='lame-card-content'>bla bla bla</div>
+                        </li>
+                        <li id='9' class='lame-card lame-green'>
+                            <div class='lame-card-header'>play2</div>
+                            <div class='lame-card-content'>bal bal bal</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id='10' class='lame-queue last'>
+                    <div class='lame-queue-header'>archive</div>
+                    <ul class='lame-queue-content'>
+                    </ul>
+                </div>
+            
+            </div>	
+
+			<div class="footer">
+				<span>Copyright&copy; 2011, Sheeps Says, The</span>
+			</div>
+			
+		</div>
+    </body>
+</html>
